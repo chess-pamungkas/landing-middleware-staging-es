@@ -1,633 +1,76 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
-    />
-    <meta name="robots" content="noindex, nofollow" />
-    <meta
-      name="description"
-      content="Implementation guide for OQtima registration script (internal use only)"
-    />
-    <title>OQtima Registration Script - Implementation Guide</title>
-
     <!-- Include the OQtima registration script with API key for authentication -->
     <script
       src="https://oqtima.com/scripts/registration-popup-script.min.js"
       data-api-key="oqtima_prod_reg_iframe_f28e57a3d61c"
     ></script>
-
-    <style>
-      /* Global styles */
-      body {
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-          Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-        line-height: 1.5;
-        margin: 0;
-        padding: 0;
-        color: #333;
-      }
-
-      /* Container styles */
-      .container {
-        max-width: 1000px;
-        margin: 0 auto;
-        padding: 20px;
-      }
-
-      /* Header styles */
-      .header {
-        background-color: #f5f5f5;
-        padding: 30px;
-        border-radius: 8px;
-        margin-bottom: 30px;
-        text-align: center;
-      }
-
-      h1 {
-        color: #333;
-        margin-bottom: 10px;
-      }
-
-      h2 {
-        color: #ff4400;
-        margin-top: 40px;
-        margin-bottom: 15px;
-      }
-
-      h3 {
-        color: #333;
-        margin-top: 25px;
-        margin-bottom: 10px;
-      }
-
-      /* Implementation section */
-      .implementation {
-        background-color: white;
-        border-radius: 8px;
-        padding: 30px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-      }
-
-      /* Step styles */
-      .step {
-        margin-bottom: 30px;
-        padding: 20px;
-        border: 1px solid #eee;
-        border-radius: 8px;
-        background-color: #fdfdfd;
-      }
-
-      /* Code example styles */
-      .code-example {
-        background-color: #f5f5f5;
-        border-left: 4px solid #ff4400;
-        padding: 15px;
-        font-family: monospace;
-        margin: 15px 0;
-        white-space: pre-wrap;
-        overflow-x: auto;
-        font-size: 14px;
-        line-height: 1.6;
-        color: #333;
-        display: block;
-      }
-
-      /* Notes and warnings */
-      .note {
-        background-color: #e8f4fd;
-        border-left: 4px solid #0078d4;
-        padding: 15px;
-        margin: 15px 0;
-      }
-
-      .warning-note {
-        background-color: #fff5f5;
-        border-left: 4px solid #ff4400;
-        padding: 15px;
-        margin: 15px 0;
-      }
-
-      .security-note {
-        background-color: #e8f7ff;
-        border-left: 4px solid #0070d2;
-        padding: 15px;
-        margin: 15px 0;
-      }
-
-      /* Example preview section */
-      .example-preview {
-        margin-top: 20px;
-        padding: 20px;
-        border: 1px solid #eee;
-        border-radius: 8px;
-        background-color: #fdfdfd;
-      }
-
-      /* Button styles */
-      button[data-oqtima-trigger] {
-        background-color: #ff4400;
-        color: white;
-        border: none;
-        padding: 10px 20px;
-        border-radius: 4px;
-        cursor: pointer;
-        font-weight: bold;
-        margin: 10px 0;
-        display: inline-block;
-      }
-
-      a[data-oqtima-trigger] {
-        color: #0078d4;
-        text-decoration: underline;
-        cursor: pointer;
-      }
-
-      /* Table styles */
-      table {
-        width: 100%;
-        border-collapse: collapse;
-        margin: 20px 0;
-      }
-
-      th,
-      td {
-        padding: 12px 15px;
-        text-align: left;
-        border-bottom: 1px solid #ddd;
-      }
-
-      th {
-        background-color: #f5f5f5;
-        font-weight: bold;
-      }
-
-      tr:hover {
-        background-color: #f9f9f9;
-      }
-
-      /* Responsive styles */
-      @media (max-width: 768px) {
-        .container {
-          padding: 10px;
-        }
-
-        .header,
-        .implementation,
-        .step {
-          padding: 15px;
-        }
-
-        .code-example {
-          font-size: 12px;
-        }
-      }
-
-      .example-section {
-        margin-bottom: 25px;
-        border: 1px solid #eee;
-        border-radius: 8px;
-        overflow: hidden;
-      }
-
-      .example-container {
-        padding: 0;
-      }
-
-      .example-header {
-        background-color: #f0f0f0;
-        padding: 8px 15px;
-        font-weight: bold;
-        border-bottom: 1px solid #ddd;
-      }
-
-      .code-example {
-        background-color: #f5f5f5;
-        border-left: 4px solid #ff4400;
-        padding: 15px;
-        font-family: monospace;
-        margin: 0;
-        white-space: pre-wrap;
-        overflow-x: auto;
-        font-size: 14px;
-        line-height: 1.6;
-        color: #333;
-      }
-
-      .example-preview {
-        padding: 20px;
-        background-color: #fff;
-        border-top: 1px solid #eee;
-      }
-
-      /* Add these styles to your existing CSS */
-      .code-example-container {
-        position: relative;
-      }
-
-      .copy-button {
-        position: absolute;
-        top: 8px;
-        right: 8px;
-        background-color: #f0f0f0;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-        padding: 4px 8px;
-        font-size: 12px;
-        cursor: pointer;
-        transition: all 0.2s;
-      }
-
-      .copy-button:hover {
-        background-color: #e0e0e0;
-      }
-
-      .copy-button.copied {
-        background-color: #4caf50;
-        color: white;
-      }
-    </style>
   </head>
   <body>
-    <div class="container">
-      <div class="header">
-        <h1>OQtima Registration Script</h1>
-        <p>Implementation guide for OQtima popup registration script</p>
+	<button
 
-        <div class="warning-note">
-          FOR OQTIMA INTERNAL USE ONLY - This script and implementation guide is
-          restricted to authorized OQtima personnel only
-        </div>
-      </div>
+			data-oqtima-trigger
 
-      <div class="implementation">
-        <h2>Implementation Guide</h2>
-        <p>
-          Follow these steps to integrate the OQtima registration popup script
-          on your landing page. This implementation provides flexibility by
-          allowing you to use any HTML element as a trigger for the registration
-          popup.
-        </p>
+			data-lang="es"
 
-        <div class="step">
-          <h3>Step 1: Add the Script to Your Page</h3>
-          <p>
-            Add the script tag to the <code>&lt;head&gt;</code> section of your
-            HTML. This allows the script to load early and be available
-            throughout your page:
-          </p>
-          <div class="code-example">
-            &lt;script
-            src="https://oqtima.com/scripts/registration-popup-script.min.js"
-            data-api-key="oqtima_prod_reg_iframe_f28e57a3d61c"
-            &gt;&lt;/script&gt;
-          </div>
+			data-referral-type="14"
+			
+			data-referral-value="xxx"
 
-          <div class="note">
-            <strong>Important:</strong> The <code>data-api-key</code> attribute
-            is required for authentication. You must use the API key provided by
-            OQtima. Contact your account manager if you don't have an API key.
-          </div>
-        </div>
+			style="
 
-        <div class="step">
-          <h3>Step 2: Add Trigger Elements</h3>
-          <p>
-            Add the <code>data-oqtima-trigger</code> attribute to any HTML
-            element you want to use as a trigger for the registration popup.
-            This can be a button, link, image, or any other clickable element:
-          </p>
+				background: linear-gradient(135deg,
 
-          <div class="example-section">
-            <h4>Button Trigger Example</h4>
-            <div class="example-container">
-              <div class="example-header">Code:</div>
-              <div class="code-example">
-                &lt;button data-oqtima-trigger data-lang="en"&gt; Register Now
-                &lt;/button&gt;
-              </div>
+	#FF4500 0%,
 
-              <div class="example-header">Result:</div>
-              <div class="example-preview">
-                <button data-oqtima-trigger data-lang="en">Register Now</button>
-              </div>
-            </div>
-          </div>
+	#FF6B35 100%);
 
-          <div class="example-section">
-            <h4>Link Trigger Example</h4>
-            <div class="example-container">
-              <div class="example-header">Code:</div>
-              <div class="code-example">
-                &lt;a href="#" data-oqtima-trigger data-lang="en"&gt; Open
-                Registration Form &lt;/a&gt;
-              </div>
+				color: white;
 
-              <div class="example-header">Result:</div>
-              <div class="example-preview">
-                <a href="#" data-oqtima-trigger data-lang="en">
-                  Open Registration Form
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
+				font-size: 18px;
 
-        <div class="step">
-          <h3>Step 3: Understand Available Parameters</h3>
-          <p>
-            The OQtima registration script supports several parameters that can
-            be added as data attributes to your trigger elements:
-          </p>
+				font-weight: bold;
 
-          <table>
-            <thead>
-              <tr>
-                <th>Parameter</th>
-                <th>Description</th>
-                <th>Required</th>
-                <th>Example</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><code>data-oqtima-trigger</code></td>
-                <td>
-                  Marks the element as a trigger for the registration popup
-                </td>
-                <td>Yes</td>
-                <td><code>data-oqtima-trigger</code></td>
-              </tr>
-              <tr>
-                <td><code>data-referral-type</code></td>
-                <td>
-                  Referral type for tracking:
-                  <ul>
-                    <li><strong>12</strong> - IB Referral Link</li>
-                    <li><strong>14</strong> - Campaign Link</li>
-                  </ul>
-                </td>
-                <td>No</td>
-                <td><code>data-referral-type="12"</code></td>
-              </tr>
-              <tr>
-                <td><code>data-referral-value</code></td>
-                <td>Referral value for tracking (IB ID or Campaign ID)</td>
-                <td>No</td>
-                <td><code>data-referral-value="IB0318050083U"</code></td>
-              </tr>
-              <tr>
-                <td><code>data-lang</code></td>
-                <td>Language code for the registration form</td>
-                <td>No</td>
-                <td><code>data-lang="en"</code></td>
-              </tr>
-            </tbody>
-          </table>
+				font-family: Arial, sans-serif;
 
-          <div class="note">
-            <strong>Supported languages:</strong> en (English), fr (French), br
-            (Brazilian Portuguese), vn (Vietnamese), th (Thai), es (Spanish), it
-            (Italian), cn (Chinese Simplified), zh (Chinese Traditional), id
-            (Indonesian), jp (Japanese), my (Malay), ar (Arabic)
-          </div>
-        </div>
+				letter-spacing: 1px;
 
-        <h2>Implementation Examples</h2>
-        <p>
-          Below are examples for different implementation scenarios based on
-          your registration needs.
-        </p>
+				padding: 16px 45px;
 
-        <div class="step">
-          <h3>Normal Registration</h3>
-          <p>
-            Use this implementation when no specific referral tracking is
-            needed:
-          </p>
+				border: none;
 
-          <div class="example-section">
-            <h4>Button Example (Brazilian Portuguese)</h4>
-            <div class="example-container">
-              <div class="example-header">Code:</div>
-              <div class="code-example">
-                &lt;button data-oqtima-trigger data-lang="br"&gt; Registre-se
-                Agora &lt;/button&gt;
-              </div>
+				border-radius: 50px;
 
-              <div class="example-header">Result:</div>
-              <div class="example-preview">
-                <button data-oqtima-trigger data-lang="br">
-                  Registre-se Agora
-                </button>
-              </div>
-            </div>
-          </div>
+				cursor: pointer;
 
-          <div class="example-section">
-            <h4>Link Example (French)</h4>
-            <div class="example-container">
-              <div class="example-header">Code:</div>
-              <div class="code-example">
-                &lt;a href="#" data-oqtima-trigger data-lang="fr"&gt; Ouvrir le
-                formulaire d'inscription &lt;/a&gt;
-              </div>
+				text-transform: uppercase;
 
-              <div class="example-header">Result:</div>
-              <div class="example-preview">
-                <a href="#" data-oqtima-trigger data-lang="fr">
-                  Ouvrir le formulaire d'inscription
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
+				transition: all 0.3s ease;
 
-        <div class="step">
-          <h3>IB Referral Link</h3>
-          <p>
-            When using an IB referral link, include
-            <code>data-referral-type="12"</code> and
-            <code>data-referral-value</code> with your unique IB identifier:
-          </p>
+				box-shadow: 0 4px 20px rgba(255, 69, 0, 0.3);
 
-          <div class="example-section">
-            <h4>Button Example (Japanese)</h4>
-            <div class="example-container">
-              <div class="example-header">Code:</div>
-              <div class="code-example">
-                &lt;button data-oqtima-trigger data-lang="jp"
-                data-referral-type="12" data-referral-value="IB0318050083U"&gt;
-                IBで登録する &lt;/button&gt;
-              </div>
+			"
 
-              <div class="example-header">Result:</div>
-              <div class="example-preview">
-                <button
-                  data-oqtima-trigger
-                  data-lang="jp"
-                  data-referral-type="12"
-                  data-referral-value="IB0318050083U"
-                >
-                  IBで登録する
-                </button>
-              </div>
-            </div>
-          </div>
+			onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 8px 25px rgba(255, 69, 0, 0.4)'; this.style.background='linear-gradient(135deg,
 
-          <div class="example-section">
-            <h4>Link Example (Spanish)</h4>
-            <div class="example-container">
-              <div class="example-header">Code:</div>
-              <div class="code-example">
-                &lt;a href="#" data-oqtima-trigger data-lang="es"
-                data-referral-type="12" data-referral-value="IB0318050083U"&gt;
-                Registrarse con IB &lt;/a&gt;
-              </div>
+	#E63E00 0%,
 
-              <div class="example-header">Result:</div>
-              <div class="example-preview">
-                <a
-                  href="#"
-                  data-oqtima-trigger
-                  data-lang="es"
-                  data-referral-type="12"
-                  data-referral-value="IB0318050083U"
-                >
-                  Registrarse con IB
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
+	#FF4500 100%)';"
 
-        <div class="step">
-          <h3>Campaign Link</h3>
-          <p>
-            For campaign tracking, use <code>data-referral-type="14"</code> and
-            <code>data-referral-value</code> with your campaign identifier:
-          </p>
+			onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 20px rgba(255, 69, 0, 0.3)'; this.style.background='linear-gradient(135deg,
 
-          <div class="example-section">
-            <h4>Button Example (Chinese Traditional)</h4>
-            <div class="example-container">
-              <div class="example-header">Code:</div>
-              <div class="code-example">
-                &lt;button data-oqtima-trigger data-lang="zh"
-                data-referral-type="14" data-referral-value="dGVzdA=="&gt;
-                加入活動 &lt;/button&gt;
-              </div>
+	#FF4500 0%,
 
-              <div class="example-header">Result:</div>
-              <div class="example-preview">
-                <button
-                  data-oqtima-trigger
-                  data-lang="zh"
-                  data-referral-type="14"
-                  data-referral-value="dGVzdA=="
-                >
-                  加入活動
-                </button>
-              </div>
-            </div>
-          </div>
+	#FF6B35 100%)';"
 
-          <div class="example-section">
-            <h4>Link Example (Indonesian)</h4>
-            <div class="example-container">
-              <div class="example-header">Code:</div>
-              <div class="code-example">
-                &lt;a href="#" data-oqtima-trigger data-lang="id"
-                data-referral-type="14" data-referral-value="dGVzdA=="&gt;
-                Bergabung dengan Kampanye &lt;/a&gt;
-              </div>
+			onmousedown="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 2px 15px rgba(255, 69, 0, 0.4)';"
 
-              <div class="example-header">Result:</div>
-              <div class="example-preview">
-                <a
-                  href="#"
-                  data-oqtima-trigger
-                  data-lang="id"
-                  data-referral-type="14"
-                  data-referral-value="dGVzdA=="
-                >
-                  Bergabung dengan Kampanye
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+			onmouseup="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 8px 25px rgba(255, 69, 0, 0.4)';"
+	>
 
-    <script>
-      // Add this script at the end of your body tag
-      document.addEventListener("DOMContentLoaded", function () {
-        // Add copy buttons to all code examples
-        const codeExamples = document.querySelectorAll(".code-example");
+			COMIENZA AHORA
+	</button>
 
-        codeExamples.forEach(function (codeExample, index) {
-          // Create a container for the code example
-          const container = document.createElement("div");
-          container.className = "code-example-container";
-
-          // Create the copy button
-          const copyButton = document.createElement("button");
-          copyButton.className = "copy-button";
-          copyButton.textContent = "Copy code";
-          copyButton.setAttribute("data-index", index);
-
-          // Clone the code example
-          const codeClone = codeExample.cloneNode(true);
-
-          // Replace the code example with the container
-          codeExample.parentNode.replaceChild(container, codeExample);
-
-          // Add the code example and copy button to the container
-          container.appendChild(codeClone);
-          container.appendChild(copyButton);
-
-          // Add click event to the copy button
-          copyButton.addEventListener("click", function () {
-            // Get the text content of the code example
-            const codeText = codeClone.textContent.trim();
-
-            // Copy the text to clipboard
-            navigator.clipboard
-              .writeText(codeText)
-              .then(function () {
-                // Show success message
-                copyButton.textContent = "Copied!";
-                copyButton.classList.add("copied");
-
-                // Reset button after 2 seconds
-                setTimeout(function () {
-                  copyButton.textContent = "Copy code";
-                  copyButton.classList.remove("copied");
-                }, 2000);
-              })
-              .catch(function (err) {
-                console.error("Failed to copy text: ", err);
-                copyButton.textContent = "Failed to copy";
-
-                // Reset button after 2 seconds
-                setTimeout(function () {
-                  copyButton.textContent = "Copy code";
-                }, 2000);
-              });
-          });
-        });
-
-        // Prevent default behavior for links with # href
-        const links = document.querySelectorAll('a[href="#"]');
-        links.forEach((link) => {
-          link.addEventListener("click", function (e) {
-            e.preventDefault();
-          });
-        });
-      });
-    </script>
   </body>
 </html>
